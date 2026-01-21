@@ -1,25 +1,79 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-
+import store from '../store'
+import Home from '../views/Home'
+import Auth from '../views/Auth'
+import Applications from '../views/Applications'
+import Request from '../views/Request'
+import Help from '../views/Help'
+import NotFound from '../views/NotFound'
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    component: Home,
+    meta:{
+      layot: 'main',
+      auth: true
+    }
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/auth',
+    component: Auth,
+    meta:{
+      layot: 'login',
+      auth: false
+    }
+  },
+  {
+    path: '/applications',
+    component: Applications,
+    meta:{
+      layot: 'main',
+      auth: true
+    }
+  },
+   {
+    path: '/request/:id',
+    component: Request,
+    meta:{
+      layot: 'main',
+      auth: true
+    }
+  },
+  {
+    path: '/help',
+    component: Help,
+    meta:{
+      layot: 'main',
+      auth: true
+    }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: NotFound,
+    meta:{
+      layot: 'login',
+      auth: false
+    }
   }
+  
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  linkActiveClass: 'active',
+  linkExactActiveClass: 'active'
+})
+
+router.beforeEach((to, from, next) => {
+  const requiredAuth = to.meta.auth
+  if (requiredAuth && store.getters['auth/isAuth']) {
+    next()
+  } else if(requiredAuth && !store.getters['auth/isAuth']){
+    next('/auth?message=auth')
+  }else{
+    next()
+  }
 })
 
 export default router

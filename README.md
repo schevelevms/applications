@@ -1,19 +1,6 @@
-# vue-practice-crm
+# CRM Applications
 
-## Project setup
-```
-npm install
-```
+## Info
+Приложение для управления заявками с авторизацией для сотрудников, фильтрацией по параметрам (название, сотрудники, статусы), а также возможность изменения статуса и удаления заявок.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
